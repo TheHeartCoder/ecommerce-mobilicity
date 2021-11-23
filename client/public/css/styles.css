@@ -1,0 +1,37 @@
+
+.jumbotron {
+  background-image: linear-gradient(to right, #45a5b6, #f0c27d);
+  color: rgb(13, 34, 92);
+  font-size: 2.5em;
+  padding: 2rem 2rem !important;
+}
+
+.subHead{
+  color: #fff;
+  font-size: 0.5em;
+}
+
+.btn-primary {
+  background-color: #0b9ac5;
+  border-color:#0b9ac5;
+}
+
+.btn-primary:hover {
+  background-color: #08a8ad;
+  border-color:#08a8ad;
+}
+
+.rightAlign {
+  margin-left: auto;
+}
+
+
+
+.banner{
+  height: 350px;
+  color: #fff;
+  line-height: 350px;
+  text-align: center;
+  background: '#364d79';
+  width: 100%;
+}
