@@ -1,11 +1,4 @@
 import { Carousel } from 'antd';
-const contentStyle = {
-  height: '250px',
-  color: '#fff',
-  lineHeight: '250px',
-  textAlign: 'center',
-  background: '#364d79',
-};
 
 const IndexCarousel = () => {
   const onCarouselChange = () => {};

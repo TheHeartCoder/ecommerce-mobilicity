@@ -80,10 +80,10 @@ const NavBar = () => {
         </Menu.Item>
         <SubMenu key='SubMenu' icon={<UserOutlined />} title='Arindam Paul'>
           <Menu.Item key='setting:1'>My Profile</Menu.Item>
-          <Menu.Item key='setting:1'>My Cart</Menu.Item>
-          <Menu.Item key='setting:1'>My Wish List</Menu.Item>
-          <Menu.Item key='setting:1'>My Orders</Menu.Item>
-          <Menu.Item key='setting:1'>Log Out</Menu.Item>
+          <Menu.Item key='setting:2'>My Cart</Menu.Item>
+          <Menu.Item key='setting:3'>My Wish List</Menu.Item>
+          <Menu.Item key='setting:4'>My Orders</Menu.Item>
+          <Menu.Item key='setting:5'>Log Out</Menu.Item>
         </SubMenu>
       </Menu>
 
