@@ -42,3 +42,7 @@
   width: 81px;
   height: 70px;
 }
+
+input[type='radio'] { 
+  transform: scale(2); 
+}
