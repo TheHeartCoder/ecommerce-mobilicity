@@ -58,7 +58,7 @@ const SingleOrder = () => {
               </Steps>
               <div className='floa-right'>
                 <button className='btn btn-link p-2 float-right'>
-                  Download Invoice
+                  Print Invoice
                 </button>
                 <button
                   className='btn btn-link p-2 float-right'

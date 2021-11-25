@@ -40,7 +40,7 @@ const NavBar = () => {
         mode='horizontal'
         theme='dark'
         selectedKeys={[current]}
-        className='mb-1'
+        className='mb-1 hide-print'
       >
         <Menu.Item key='/home' onClick={(e) => setCurrent(e.key)}>
           <Link href='/'>

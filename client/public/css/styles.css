@@ -46,3 +46,9 @@
 input[type='radio'] { 
   transform: scale(2); 
 }
+
+@media print {
+  .hide-print {
+    display: none;
+  }
+}
