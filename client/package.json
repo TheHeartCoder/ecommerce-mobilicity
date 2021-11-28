@@ -15,6 +15,7 @@
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
     "antd": "^4.17.1",
+    "antd-img-crop": "^3.16.0",
     "axios": "^0.24.0",
     "bootstrap": "^4.6.1",
     "i": "^0.3.7",

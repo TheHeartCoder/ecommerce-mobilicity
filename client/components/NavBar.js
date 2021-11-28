@@ -108,34 +108,40 @@ const NavBar = () => {
 						</Link>
 					</Menu.Item>
 					<Menu.Item key='setting:6'>Log Out</Menu.Item>
-					<Menu.Item key='setting:3'>
+					<Menu.Item key='setting:13'>
 						{' '}
 						<Link href='/admin/category-list'>
 							<a>Categories</a>
 						</Link>
 					</Menu.Item>
-					<Menu.Item key='setting:3'>
+					<Menu.Item key='setting:23'>
 						{' '}
 						<Link href='/admin/prduct-brands'>
 							<a>Brands</a>
 						</Link>
 					</Menu.Item>
-					<Menu.Item key='setting:3'>
+					<Menu.Item key='setting:33'>
 						{' '}
 						<Link href='/admin/product-list'>
 							<a>Products</a>
 						</Link>
 					</Menu.Item>
-					<Menu.Item key='setting:3'>
+					<Menu.Item key='setting:43'>
 						{' '}
 						<Link href='/admin/order-list'>
 							<a>Orders</a>
 						</Link>
 					</Menu.Item>
-					<Menu.Item key='setting:3'>
+					<Menu.Item key='setting:55'>
 						{' '}
 						<Link href='/admin/customer-list'>
 							<a>Customers</a>
+						</Link>
+					</Menu.Item>
+					<Menu.Item key='setting:35'>
+						{' '}
+						<Link href='/admin/coupon-list'>
+							<a>Coupons</a>
 						</Link>
 					</Menu.Item>
 				</SubMenu>

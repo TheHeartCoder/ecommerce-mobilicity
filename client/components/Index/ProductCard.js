@@ -18,7 +18,7 @@ const ProductCard = () => {
 				<img
 					alt='example'
 					src='https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-12-family-select-2021?wid=940&hei=1112&fmt=jpeg&qlt=80&.v=1617135051000'
-					height='300'
+					height='430'
 					width='100'
 					className='p-4'
 				/>

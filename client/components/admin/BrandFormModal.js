@@ -1,4 +1,4 @@
-import { Modal, Rate } from 'antd';
+import { Modal } from 'antd';
 const BrandFormModal = ({ isModalVisible, setIsModalVisible }) => {
 	const handleOk = () => {
 		setIsModalVisible(false);
