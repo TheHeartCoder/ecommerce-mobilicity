@@ -16,7 +16,7 @@ const index = () => {
         <ProductCarousel />
       </div>
       <div className='mt-4'>
-        <h4 className='text-center'>Top Rated Products</h4>
+        <h4 className='text-center'>Al Brands</h4>
         <ProductCarousel />
       </div>
     </div>

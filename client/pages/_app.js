@@ -1,20 +1,32 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'antd/dist/antd.css';
 import '../public/css/styles.css';
+import { Toaster } from 'react-hot-toast';
 
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 
 import { useRouter } from 'next/router';
+import { wrapper } from '../redux/store';
+import { useEffect } from 'react';
+import axios from 'axios';
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
-  console.log();
+  useEffect(() => {
+    const getCsrfToken = async () => {
+      const { data } = await axios.get('/api/csrf-token');
+      // console.log("CSRF", data);
+      axios.defaults.headers['X-CSRF-Token'] = data.getCsrfToken;
+    };
+    getCsrfToken();
+  }, []);
   return (
     <>
       <NavBar />
       <Component {...pageProps} /> <Footer />
+      <Toaster position='top-center' reverseOrder={false} />
     </>
   );
 }
-export default MyApp;
+export default wrapper.withRedux(MyApp);
