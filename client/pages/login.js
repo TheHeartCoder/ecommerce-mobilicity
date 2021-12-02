@@ -4,8 +4,9 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { loginUserAction } from '../redux/actions/auth';
 import toast from 'react-hot-toast';
-import axios from 'axios';
 import { activateUser } from '../services/authService';
+import { LoadingOutlined } from '@ant-design/icons';
+import Link from 'next/link';
 
 const login = () => {
   const [loginForm, setLoginForm] = useState({ email: '', password: '' });
@@ -13,12 +14,13 @@ const login = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const userInfo = useSelector((state) => state.userLogin);
+  const loggedInUser = useSelector((state) => state.loggedInUser);
+  const { userInfo, loading } = loggedInUser;
 
   const activationId = router.query.activation;
 
   useEffect(() => {
-    if (userInfo && userInfo.token) {
+    if (userInfo && userInfo.email) {
       router.push('/');
     }
 
@@ -78,11 +80,17 @@ const login = () => {
             type='submit'
             className='btn btn-primary btn-block'
             onClick={handleSubmit}
-            disabled={activationLoading}
+            disabled={activationLoading || loading}
           >
-            Log In
+            {loading ? <LoadingOutlined /> : 'Log In'}
           </button>
         </form>
+        <Link href='/register'>
+          <a className='m-2 text-center'>Don't have an account ?</a>
+        </Link>
+        <Link href='/forgot-password'>
+          <a className='text-center'>Forgot password ?</a>
+        </Link>
       </div>
     </>
   );

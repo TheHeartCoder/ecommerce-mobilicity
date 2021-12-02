@@ -13,7 +13,10 @@ export const loginReducer = (state = {}, action) => {
     case USER_LOGIN_REQUEST:
       return { ...state, loading: true };
     case USER_LOGIN_SUCCESS:
-      localStorage.setItem('userInfo', JSON.stringify({ ...action?.payload }));
+      window.localStorage.setItem(
+        '_usr_mobilicity',
+        JSON.stringify({ ...action?.payload })
+      );
       return { ...state, userInfo: action.payload, loading: false };
 
     case USER_LOGIN_FAIL:

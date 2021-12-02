@@ -15,6 +15,7 @@ export const loginUserAction = (body) => async (dispatch) => {
       type: USER_LOGIN_REQUEST,
     });
     const data = await loginUser(body);
+
     dispatch({
       type: USER_LOGIN_SUCCESS,
       payload: data,

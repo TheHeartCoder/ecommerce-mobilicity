@@ -37,7 +37,7 @@ const makeStore = () => {
             .then((data) => {
               console.log('/401 error > logout');
               dispatch({ type: 'LOGOUT' });
-              window.localStorage.removeItem('usr_mobilicity');
+              window.localStorage.removeItem('_usr_mobilicity');
               router.push('/login');
             })
             .catch((err) => {

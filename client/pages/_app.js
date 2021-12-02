@@ -10,6 +10,7 @@ import { useRouter } from 'next/router';
 import { wrapper } from '../redux/store';
 import { useEffect } from 'react';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
@@ -21,9 +22,13 @@ function MyApp({ Component, pageProps }) {
     };
     getCsrfToken();
   }, []);
+
+  const loggedInUser = useSelector((state) => state.loggedInUser);
+  let updatedPageProps = { ...pageProps, loggedInUser };
+
   return (
     <>
-      <NavBar />
+      <NavBar loggedInUser={loggedInUser} />
       <Component {...pageProps} /> <Footer />
       <Toaster position='top-center' reverseOrder={false} />
     </>

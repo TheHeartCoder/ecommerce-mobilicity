@@ -11,15 +11,15 @@ const register = () => {
     email: '',
     password: '',
   });
-  const userInfo = useSelector((state) => state.userInfo);
-  const dispatch = useDispatch();
+  const loggedInUser = useSelector((state) => state.loggedInUser);
+  const { userInfo } = loggedInUser;
 
   useEffect(() => {
-    if (userInfo && userInfo.token) {
+    if (userInfo && userInfo.email) {
       router.push('/');
     }
   }, [userInfo]);
-
+  const dispatch = useDispatch();
   const handleChange = (e) => {
     const { name, value } = e.target;
     setRegisterForm({ ...registerForm, [name]: value });

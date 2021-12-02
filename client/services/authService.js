@@ -38,6 +38,35 @@ export const activateUser = (activationId) => {
   });
 };
 
-export const forgotPasspowrdReq = () => {};
+export const forgotPassword = (email) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      await axios.post('/api/forgot-password', { email });
+      resolve(true);
+    } catch (error) {
+      reject(error.response.data);
+    }
+  });
+};
 
-export const resetPassword = () => {};
+export const resetPassword = (form) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const { data } = await axios.post('/api/reset-password', form);
+      resolve(data);
+    } catch (error) {
+      reject(error.response.data);
+    }
+  });
+};
+
+export const logoutUser = () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const { data } = await axios.get('/api/logout');
+      resolve(data);
+    } catch (error) {
+      reject(error.response.data);
+    }
+  });
+};

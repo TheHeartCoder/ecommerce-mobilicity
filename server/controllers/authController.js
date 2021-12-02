@@ -1,4 +1,6 @@
 import User from '../models/user';
+import Otp from '../models/otp';
+
 import { hashPassword, comparePassword } from '../utils/auth';
 import jwt from 'jsonwebtoken';
 import { nanoid } from 'nanoid';
@@ -24,7 +26,7 @@ export const register = async (req, res) => {
         .status(400)
         .send('Password is required and should be min 6 characters long');
     }
-    let userExist = await User.findOne({ email }).exec();
+    let userExist = await User.findOne({ email });
     if (userExist) return res.status(400).send('Email is exist');
 
     // hash password
@@ -71,7 +73,7 @@ export const register = async (req, res) => {
       })
       .catch(async (err) => {
         console.log(err);
-        await User.findByIdAndDelete(createdUser._id).exec();
+        await User.findByIdAndDelete(createdUser._id);
         return res
           .status(500)
           .send(
@@ -87,7 +89,7 @@ export const register = async (req, res) => {
 export const activateUserAccount = async (req, res) => {
   try {
     const id = req.body.activationId;
-    const user = await User.findById(id).exec();
+    const user = await User.findById(id);
     if (!user) return res.status(404).send('User not found');
     if (user.status === 'active')
       return res.status(400).send('User is already active');
@@ -103,7 +105,7 @@ export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
     console.log(req.body);
-    const user = await User.findOne({ email }).exec();
+    const user = await User.findOne({ email });
     if (!user) return res.status(400).send('Invalid email or password');
     // check password
     const match = await comparePassword(password, user.password);
@@ -139,7 +141,7 @@ export const logout = async (req, res) => {
 
 export const currentUser = async (req, res) => {
   try {
-    const user = await User.findById(req.user._id).select('-password').exec();
+    const user = await User.findById(req.user._id).select('-password');
     console.log('CURRENT_USER', user);
     return res.json({ ok: true });
   } catch (err) {
@@ -150,13 +152,17 @@ export const currentUser = async (req, res) => {
 export const forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
+
+    const user = await User.findOne({ email });
+    if (!user) return res.status(400).send('Invalid email');
+
     // console.log(email);
     const shortCode = nanoid(6).toUpperCase();
-    const user = await User.findOneAndUpdate(
-      { email },
-      { passwordResetCode: shortCode }
+    await Otp.findOneAndUpdate(
+      { user: user._id },
+      { resetPasswordOtp: shortCode },
+      { upsert: true, useFindAndModify: false }
     );
-    if (!user) return res.status(400).send('User not found');
 
     // prepare for email
     const params = {
@@ -171,9 +177,9 @@ export const forgotPassword = async (req, res) => {
             Data: `
                 <html>
                   <h1>Reset password</h1>
-                  <p>User this code to reset your password</p>
+                  <p>User this <strong>OTP</strong> to reset your password</p>
                   <h2 style="color:red;">${shortCode}</h2>
-                  <i>edemy.com</i>
+                  <p style="color:blue;">This OTP is valid upto 10 minutes</p>
                 </html>
               `,
           },
@@ -201,20 +207,21 @@ export const forgotPassword = async (req, res) => {
 
 export const resetPassword = async (req, res) => {
   try {
-    const { email, code, newPassword } = req.body;
-    // console.table({ email, code, newPassword });
+    const { email, otp, newPassword } = req.body;
+    const otpExist = await Otp.findOne({ resetPasswordOtp: otp });
+    if (!otpExist) return res.status(400).send('Invalid OTP');
     const hashedPassword = await hashPassword(newPassword);
 
-    const user = User.findOneAndUpdate(
+    await User.findOneAndUpdate(
       {
         email,
-        passwordResetCode: code,
       },
       {
         password: hashedPassword,
-        passwordResetCode: '',
       }
-    ).exec();
+    );
+
+    await Otp.findOneAndDelete({ resetPasswordOtp: otp });
     res.json({ ok: true });
   } catch (err) {
     console.log(err);

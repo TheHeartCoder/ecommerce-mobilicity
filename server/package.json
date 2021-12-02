@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon -r esm server.js"
+    "start": "nodemon -r esm server.js",
+    "data:import": "node -r esm seeder",
+    "data:destroy": "node -r esm seeder -d"
   },
   "keywords": [],
   "author": "",
