@@ -13,25 +13,25 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 
 function MyApp({ Component, pageProps }) {
-  const router = useRouter();
-  useEffect(() => {
-    const getCsrfToken = async () => {
-      const { data } = await axios.get('/api/csrf-token');
-      // console.log("CSRF", data);
-      axios.defaults.headers['X-CSRF-Token'] = data.getCsrfToken;
-    };
-    getCsrfToken();
-  }, []);
+	const router = useRouter();
+	useEffect(() => {
+		const getCsrfToken = async () => {
+			const { data } = await axios.get('/api/csrf-token');
+			// console.log("CSRF", data);
+			axios.defaults.headers['X-CSRF-Token'] = data.getCsrfToken;
+		};
+		getCsrfToken();
+	}, []);
 
-  const loggedInUser = useSelector((state) => state.loggedInUser);
-  let updatedPageProps = { ...pageProps, loggedInUser };
+	const loggedInUser = useSelector((state) => state.loggedInUser);
+	let updatedPageProps = { ...pageProps, loggedInUser };
 
-  return (
-    <>
-      <NavBar loggedInUser={loggedInUser} />
-      <Component {...pageProps} /> <Footer />
-      <Toaster position='top-center' reverseOrder={false} />
-    </>
-  );
+	return (
+		<>
+			<NavBar loggedInUser={loggedInUser} />
+			<Component {...updatedPageProps} /> <Footer />
+			<Toaster position='top-center' reverseOrder={false} />
+		</>
+	);
 }
 export default wrapper.withRedux(MyApp);

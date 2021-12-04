@@ -1,6 +1,7 @@
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { List, Avatar, Button, Pagination } from 'antd';
-import { useState } from 'react';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import CategoryFormModal from '../../components/admin/CategoryFormModal';
 import HeadText from '../../components/HeadText';
 
@@ -31,8 +32,16 @@ const data = [
 	},
 ];
 
-const CategoryList = () => {
+const CategoryList = ({ loggedInUser }) => {
 	const [isModalVisible, setIsModalVisible] = useState(false);
+
+	const { userInfo } = loggedInUser;
+	const router = useRouter();
+	useEffect(() => {
+		if (userInfo.role !== 'Admin') {
+			router.push('/');
+		}
+	}, []);
 
 	const showModal = () => {
 		setIsModalVisible(true);
