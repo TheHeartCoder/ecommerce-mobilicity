@@ -2,6 +2,9 @@ import { Modal, Rate } from 'antd';
 import { Upload, message } from 'antd';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import { useState } from 'react';
+import Resizer from 'react-image-file-resizer';
+import toast from 'react-hot-toast';
+import axios from 'axios';
 const CategoryFormModal = ({ isModalVisible, setIsModalVisible }) => {
   const handleOk = () => {
     setIsModalVisible(false);
@@ -21,10 +24,36 @@ const CategoryFormModal = ({ isModalVisible, setIsModalVisible }) => {
     }
     if (info.file.status === 'done') {
       // Get this url from response in real world.
-      getBase64(info.file.originFileObj, (imageUrl) => {
-        setImageLoading(false);
-        setTempImage(imageUrl);
-      });
+      // getBase64(info.file.originFileObj, (imageUrl) => {
+      //   setImageLoading(false);
+      //   setTempImage(imageUrl);
+      // });
+      console.log(info.file.originFileObj);
+      // resize
+      Resizer.imageFileResizer(
+        info.file.originFileObj,
+        450,
+        370,
+        'JPEG',
+        100,
+        0,
+        async (uri) => {
+          console.log(uri);
+          try {
+            let { data } = await axios.post('/api/image-upload', {
+              image: uri,
+            });
+            console.log('IMAGE UPLOADED', data);
+            // set image in the state
+            // setImage(data);
+            // setValues({ ...values, loading: false });
+          } catch (err) {
+            console.log(err);
+            // setValues({ ...values, loading: false });
+            toast.error('Image upload failed. Try later.');
+          }
+        }
+      );
     }
   };
 
