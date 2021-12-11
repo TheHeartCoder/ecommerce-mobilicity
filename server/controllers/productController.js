@@ -1,5 +1,5 @@
 import slugify from 'slugify';
-import Brand from '../models/brand';
+import Product from '../models/product';
 import { deleteImageFromS3 } from '../helpers/awsHelper';
 
 export const addProduct = async (req, res) => {
@@ -21,7 +21,7 @@ export const addProduct = async (req, res) => {
 
 		res.json(product);
 	} catch (error) {
-		console.log(err);
+		console.log(error);
 		return res.status(500).send('Something went wrong with save product data');
 	}
 };
@@ -83,47 +83,60 @@ export const getProduct = async (req, res) => {
 
 export const getProducts = async (req, res) => {
 	try {
-		const { page, limit, sort, order, filter, keyword } = req.query;
-		const skip = (page - 1) * limit;
+		console.log(req.query);
+		const { page, limit, sort, order, keyword } = req.query;
+		const pageSize = limit || 10;
+		const skip = (page - 1) * pageSize;
 		const sortBy = sort ? sort : 'name';
 		const orderBy = order ? order : 'asc';
-		const allFilter = JSON.parse(req.query.filter);
+		// const allFilter = JSON.parse(req.query.filter);
 		let findQuery = {};
 
-		if (keyword) {
-			findQuery = {
-				...findQuery,
-				name: {
-					$regex: keyword,
-					$options: 'i',
-				},
-			};
-		}
+		// if (keyword) {
+		// 	findQuery = {
+		// 		...findQuery,
+		// 		name: {
+		// 			$regex: keyword,
+		// 			$options: 'i',
+		// 		},
+		// 	};
+		// }
 
-		if (allFilter.category) {
-			findQuery = {
-				...findQuery,
-				category: allFilter.category,
-			};
-		}
+		// if (allFilter.category) {
+		// 	findQuery = {
+		// 		...findQuery,
+		// 		category: allFilter.category,
+		// 	};
+		// }
 
-		if (allFilter.brand) {
-			findQuery = {
-				...findQuery,
-				brand: allFilter.brand,
-			};
-		}
+		// if (allFilter.brand) {
+		// 	findQuery = {
+		// 		...findQuery,
+		// 		brand: allFilter.brand,
+		// 	};
+		// }
+
+		console.log(findQuery);
+
+		console.log(skip, pageSize);
 
 		const count = await Product.countDocuments(findQuery);
 
-		const products = Product.find(findQuery)
+		const products = await Product.find(findQuery)
 			.sort({ [sortBy]: orderBy })
 			.skip(skip)
-			.limit(limit)
+			.limit(pageSize)
 			.populate('brand')
 			.populate('category');
 
-		res.json({ products, page, pages: Math.ceil(count / pageSize) });
+		console.log(products);
+
+		res.json({
+			products,
+			page,
+			pages: Math.ceil(count / pageSize),
+			count: count,
+		});
 	} catch (error) {
 		console.log(error);
 		return res.status(500).send('Internal server error for getting products');

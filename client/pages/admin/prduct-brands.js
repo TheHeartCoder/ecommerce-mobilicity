@@ -1,41 +1,40 @@
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { List, Avatar, Button, Pagination } from 'antd';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import BrandFormModal from '../../components/admin/BrandFormModal';
 import HeadText from '../../components/HeadText';
-
-const data = [
-	{
-		title: 'Test Product 1',
-	},
-	{
-		title: 'Test Product 2',
-	},
-	{
-		title: 'Test Product 3',
-	},
-	{
-		title: 'Test Product 4',
-	},
-	{
-		title: 'Test Product 1',
-	},
-	{
-		title: 'Test Product 2',
-	},
-	{
-		title: 'Test Product 3',
-	},
-	{
-		title: 'Test Product 4',
-	},
-];
+import { deleteBrand, getBrands } from '../../redux/actions/brand';
+import { useRouter } from 'next/router';
 
 const BrandList = () => {
 	const [isModalVisible, setIsModalVisible] = useState(false);
 
+	const loggedInUser = useSelector((state) => state.loggedInUser);
+	const { userInfo } = loggedInUser;
+	const router = useRouter();
+
+	const dispatch = useDispatch();
+
+	const brandData = useSelector((state) => state.brandData);
+	const { loading, brands, success } = brandData;
+
+	const [currentSlug, setCurrentSlug] = useState(null);
+
+	useEffect(() => {
+		if (userInfo.role !== 'Admin') {
+			router.push('/');
+		} else {
+			dispatch(getBrands());
+		}
+	}, []);
+
 	const showModal = () => {
 		setIsModalVisible(true);
+	};
+
+	const delBrand = (slug) => {
+		dispatch(deleteBrand(slug));
 	};
 	return (
 		<>
@@ -59,23 +58,28 @@ const BrandList = () => {
 				<List
 					className='m-4 card'
 					itemLayout='horizontal'
-					dataSource={data}
+					dataSource={brands}
+					loading={loading}
 					renderItem={(item) => (
 						<List.Item>
 							<List.Item.Meta
-								avatar={
-									<Avatar src='https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-13-family-select-2021?wid=940&hei=1112&fmt=jpeg&qlt=80&.v=1629842667000' />
-								}
+								avatar={<Avatar src={item.image?.Location} shape='square' />}
 								title={item.title}
-								description={
-									'Ant Design, a design language for background applications, is refined by Ant UED Team'
-								}
+								description={item.description}
 							/>
-							<button className='btn btn-secondary' onClick={() => {}}>
+							<button
+								className='btn btn-secondary'
+								onClick={() => setCurrentSlug(item.slug)}
+							>
 								<EditOutlined />
 							</button>
 
-							<button className='btn btn-danger m-2' onClick={() => {}}>
+							<button
+								className='btn btn-danger m-2'
+								onClick={() => {
+									delBrand(item.slug);
+								}}
+							>
 								<DeleteOutlined />
 							</button>
 						</List.Item>
@@ -90,6 +94,11 @@ const BrandList = () => {
 			<BrandFormModal
 				isModalVisible={isModalVisible}
 				setIsModalVisible={setIsModalVisible}
+				loading={loading}
+				success={success}
+				currentSlug={currentSlug}
+				brands={brands}
+				setCurrentSlug={setCurrentSlug}
 			/>
 		</>
 	);

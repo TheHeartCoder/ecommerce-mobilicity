@@ -13,8 +13,8 @@ import { authTokenVerify, isAdmin, isCustomer } from '../middleware';
 
 router.post('/add-brand', authTokenVerify, isAdmin, addBrand);
 router.post('/update-brand/:slug', authTokenVerify, isAdmin, updateBrand);
-router.post('/delete-brand/:slug', authTokenVerify, isAdmin, deleteBrand);
-router.post('/get-brand/:slug', getBrand);
-router.post('/all-brand', getBrands);
+router.delete('/delete-brand/:slug', authTokenVerify, isAdmin, deleteBrand);
+router.get('/get-brand/:slug', getBrand);
+router.get('/all-brand', getBrands);
 
 module.exports = router;

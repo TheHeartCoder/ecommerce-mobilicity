@@ -1,10 +1,10 @@
-import { Modal, Rate } from 'antd';
+import { Modal } from 'antd';
 import { Upload, message } from 'antd';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import { useEffect, useState } from 'react';
 import Resizer from 'react-image-file-resizer';
 import toast from 'react-hot-toast';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import {
 	imageUploadToServer,
@@ -34,8 +34,6 @@ const CategoryFormModal = ({
 
 	const dispatch = useDispatch();
 
-	console.log(categories);
-
 	useEffect(() => {
 		if (!isModalVisible) {
 			setImageLoading(false);
@@ -56,10 +54,9 @@ const CategoryFormModal = ({
 	}, [success]);
 
 	useEffect(() => {
-		console.log(currentSlug);
 		if (currentSlug) {
 			const category = categories.find((c) => c.slug === currentSlug);
-			console.log(category);
+
 			setCatData({
 				title: category.title,
 				description: category.description,
@@ -70,15 +67,12 @@ const CategoryFormModal = ({
 	}, [currentSlug]);
 
 	const handleOk = () => {
-		// setIsModalVisible(false);
-
+		if (imageLoading || loading) {
+			return false;
+		}
 		if (!catData.title || !catData.description || !catData.image) {
 			toast.error('Please fill all the fields');
 			return;
-		}
-
-		if (imageLoading || loading) {
-			return false;
 		}
 
 		if (currentSlug) {

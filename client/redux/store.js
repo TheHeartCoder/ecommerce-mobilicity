@@ -6,11 +6,15 @@ import axios from 'axios';
 import { loginReducer } from './reducers/authReducer';
 import { useDispatch } from 'react-redux';
 import { categoryReducer } from './reducers/categoryReducer';
+import { brandReducer } from './reducers/brandReducer';
+import { productReducer } from './reducers/productReducer';
 
 const reducers = combineReducers({
 	// contacts: contactReducer,
 	loggedInUser: loginReducer,
 	categoryData: categoryReducer,
+	brandData: brandReducer,
+	productData: productReducer,
 });
 const userInfoFromStorage =
 	typeof window !== 'undefined' &&

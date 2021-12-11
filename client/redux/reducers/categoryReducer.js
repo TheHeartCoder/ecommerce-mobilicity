@@ -13,13 +13,10 @@ import {
 	ADD_CATEGORY_FAIL,
 } from '../constants/category';
 
-export const categoryReducer = (
-	state = { loading: false, categories: [] },
-	action
-) => {
+export const categoryReducer = (state = {}, action) => {
 	switch (action.type) {
 		case GET_CATEGORY_REQ:
-			return { ...state, loading: true };
+			return { ...state, loading: true, success: false };
 		case GET_CATEGORY_SUCCESS:
 			return { ...state, categories: action.payload, loading: false };
 		case GET_CATEGORY_FAIL:
