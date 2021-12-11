@@ -13,8 +13,13 @@ import { authTokenVerify, isAdmin, isCustomer } from '../middleware';
 
 router.post('/add-category', authTokenVerify, isAdmin, addCategory);
 router.post('/update-category/:slug', authTokenVerify, isAdmin, updateCategory);
-router.post('/delete-category/:slug', authTokenVerify, isAdmin, deleteCategory);
-router.post('/get-category/:slug', getCategory);
-router.post('/all-category', getCategories);
+router.delete(
+	'/delete-category/:slug',
+	authTokenVerify,
+	isAdmin,
+	deleteCategory
+);
+router.get('/get-category/:slug', getCategory);
+router.get('/all-category', getCategories);
 
 module.exports = router;

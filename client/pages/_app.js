@@ -11,22 +11,22 @@ import { useEffect } from 'react';
 import axios from 'axios';
 
 function MyApp({ Component, pageProps }) {
-  useEffect(() => {
-    const getCsrfToken = async () => {
-      const { data } = await axios.get('/api/csrf-token');
-      // console.log("CSRF", data);
-      axios.defaults.headers['X-CSRF-Token'] = data.getCsrfToken;
-    };
-    getCsrfToken();
-  }, []);
+	useEffect(() => {
+		const getCsrfToken = async () => {
+			const { data } = await axios.get('/api/csrf-token');
 
-  return (
-    <>
-      <NavBar />
-      <Component {...pageProps} />
-      <Footer />
-      <Toaster position='top-center' reverseOrder={false} />
-    </>
-  );
+			axios.defaults.headers['X-CSRF-Token'] = data.csrfToken;
+		};
+		getCsrfToken();
+	}, []);
+
+	return (
+		<>
+			<NavBar />
+			<Component {...pageProps} />
+			<Footer />
+			<Toaster position='top-center' reverseOrder={false} />
+		</>
+	);
 }
 export default wrapper.withRedux(MyApp);
