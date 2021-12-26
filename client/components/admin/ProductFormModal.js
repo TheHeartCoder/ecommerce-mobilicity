@@ -161,10 +161,11 @@ const ProductFormModal = ({
   const removeImage = async (img) => {
     try {
       await removeImageFromServer(img);
-      const updatedImages = allImage.filter(
+      const updatedImages = productData.images.filter(
         (image) => image.Location !== img.Location
       );
       allImage = updatedImages;
+
       setProductData({ ...productData, images: allImage });
 
       toast.success('Image removed successfully');

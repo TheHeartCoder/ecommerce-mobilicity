@@ -16,6 +16,7 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import { deleteProduct, getProducts } from '../../redux/actions/products';
+import ImageViewer from '../../components/products/ImageViewer';
 
 const ProductList = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -23,6 +24,8 @@ const ProductList = () => {
   const [currentSlug, setCurrentSlug] = useState(null);
   const [curPage, setCurPage] = useState(1);
   const [limit, setLimit] = useState(10);
+
+  const [pImages, setPImages] = useState([]);
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -114,6 +117,7 @@ const ProductList = () => {
                           className='text-link'
                           onClick={(e) => {
                             e.preventDefault();
+                            setPImages(item.images);
                             setVisible(true);
                           }}
                         >
@@ -124,18 +128,7 @@ const ProductList = () => {
                   </>
                 }
               />
-              <div style={{ display: 'none' }}>
-                <Image.PreviewGroup
-                  preview={{
-                    visible,
-                    onVisibleChange: (vis) => setVisible(vis),
-                  }}
-                >
-                  {item.images.map((image) => (
-                    <Image src={image.Location} />
-                  ))}
-                </Image.PreviewGroup>
-              </div>
+
               <Tag color={'blue'}>
                 {item.featured ? 'Featured' : 'Not Featured'}
               </Tag>
@@ -173,7 +166,7 @@ const ProductList = () => {
           />
         </div>
       </div>
-
+      <ImageViewer images={pImages} visible={visible} setVisible={setVisible} />
       <ProductFormModal
         isModalVisible={isModalVisible}
         setIsModalVisible={setIsModalVisible}
