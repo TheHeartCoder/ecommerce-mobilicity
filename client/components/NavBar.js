@@ -158,7 +158,13 @@ const NavBar = () => {
                   <Link href='/admin/coupon-list'>
                     <a>Coupons</a>
                   </Link>
-                </Item>{' '}
+                </Item>
+                <Item key='setting:93'>
+                  {' '}
+                  <Link href='/admin/banner-list'>
+                    <a>Banners</a>
+                  </Link>
+                </Item>
               </>
             ) : (
               loggedInuser.role === 'Customer' && (

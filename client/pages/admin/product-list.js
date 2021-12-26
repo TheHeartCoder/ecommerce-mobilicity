@@ -86,6 +86,11 @@ const ProductList = () => {
                     src={item.images[0].Location}
                     shape='square'
                     width={80}
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => {
+                      setPImages(item.images);
+                      setVisible(true);
+                    }}
                   />
                 }
                 title={item.name}
@@ -111,18 +116,6 @@ const ProductList = () => {
                       </div>
                       <div className='col-md-4'>
                         Price: <span className='text-info'>${item.price}</span>
-                      </div>
-                      <div className='col-md-4'>
-                        <a
-                          className='text-link'
-                          onClick={(e) => {
-                            e.preventDefault();
-                            setPImages(item.images);
-                            setVisible(true);
-                          }}
-                        >
-                          Click Here To See Images
-                        </a>
                       </div>
                     </div>
                   </>
