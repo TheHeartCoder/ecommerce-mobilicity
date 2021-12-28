@@ -6,21 +6,69 @@ import Resizer from 'react-image-file-resizer';
 import toast from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
 
-const uploadButton = (
-  <div>
-    {imageLoading ? <LoadingOutlined /> : <PlusOutlined />}
-    <div style={{ marginTop: 8 }}>Upload</div>
-  </div>
-);
-
 import {
   imageUploadToServer,
   removeImageFromServer,
 } from '../../services/imageService';
+import {
+  addBanner,
+  getBanners,
+  updateBanner,
+} from '../../redux/actions/banner';
 
-const BannerFormModal = ({ isModalVisible, setIsModalVisible }) => {
+const bannerDetailsInit = { link: '', image: {} };
+const BannerFormModal = ({
+  isModalVisible,
+  setIsModalVisible,
+  loading,
+  success,
+  currentSlug,
+  banners,
+  setCurrentSlug,
+}) => {
+  const [bannerDetails, setBannerDetails] = useState(bannerDetailsInit);
+  const [imageLoading, setImageLoading] = useState(false);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (!isModalVisible) {
+      setImageLoading(false);
+      setCurrentSlug(null);
+      setBannerDetails(bannerDetailsInit);
+    }
+  }, [isModalVisible]);
+
+  useEffect(() => {
+    if (success) {
+      setIsModalVisible(false);
+      dispatch(getBanners());
+    }
+  }, [success]);
+
+  useEffect(() => {
+    if (currentSlug) {
+      const banner = banners.find((c) => c.slug === currentSlug);
+
+      setBannerDetails(...bannerDetails, ...banner);
+      setIsModalVisible(true);
+    }
+  }, [currentSlug]);
+
   const handleOk = () => {
-    setIsModalVisible(false);
+    if (imageLoading || loading) {
+      return false;
+    }
+    if (!bannerDetails.link || !bannerDetails.image?.Location) {
+      toast.error('Please fill all the fields');
+      return;
+    }
+
+    if (currentSlug) {
+      dispatch(updateBanner(currentSlug, bannerDetails));
+    } else {
+      dispatch(addBanner(bannerDetails));
+    }
   };
 
   const handleCancel = () => {
@@ -33,14 +81,14 @@ const BannerFormModal = ({ isModalVisible, setIsModalVisible }) => {
       return;
     }
     if (info.file.status === 'done') {
-      if (catData?.image) {
+      if (bannerDetails?.image) {
         toast.error('Please delete previuos image before uploading new one');
         return;
       }
       // resize
       Resizer.imageFileResizer(
         info.file.originFileObj,
-        400,
+        1200,
         500,
         'JPEG',
         100,
@@ -49,7 +97,7 @@ const BannerFormModal = ({ isModalVisible, setIsModalVisible }) => {
           try {
             const uploadedImage = await imageUploadToServer(uri);
 
-            setCatData({ ...catData, image: uploadedImage });
+            setBannerDetails({ ...bannerDetails, image: uploadedImage });
             setImageLoading(false);
             toast.success('Image Uploaded Successfully');
           } catch (err) {
@@ -62,9 +110,9 @@ const BannerFormModal = ({ isModalVisible, setIsModalVisible }) => {
 
   const removeImage = async () => {
     try {
-      const response = await removeImageFromServer(catData.image);
+      const response = await removeImageFromServer(bannerDetails.image);
 
-      setCatData({ ...catData, image: '' });
+      setBannerDetails({ ...bannerDetails, image: {} });
       toast.success('Image removed successfully');
     } catch (error) {
       toast.error('Image remove failed. Try later.');
@@ -82,6 +130,13 @@ const BannerFormModal = ({ isModalVisible, setIsModalVisible }) => {
     }
     return isJpgOrPng && isLt2M;
   }
+
+  const uploadButton = (
+    <div>
+      {imageLoading ? <LoadingOutlined /> : <PlusOutlined />}
+      <div style={{ marginTop: 8 }}>Upload</div>
+    </div>
+  );
   return (
     <Modal
       title='Add Your Banner'
@@ -94,6 +149,9 @@ const BannerFormModal = ({ isModalVisible, setIsModalVisible }) => {
         type='text'
         className='form-control mb-2 p-2'
         placeholder='Banner Link'
+        onChange={(e) =>
+          setBannerDetails({ ...bannerDetails, link: e.target.value })
+        }
       />
       <Upload
         name='avatar'

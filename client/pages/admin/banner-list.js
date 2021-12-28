@@ -1,42 +1,46 @@
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { List, Avatar, Button, Pagination } from 'antd';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { useRouter } from 'next/router';
 
 import CouponModal from '../../components/admin/CouponModal';
 import HeadText from '../../components/HeadText';
-
-const data = [
-  {
-    title: 'Test Product 1',
-  },
-  {
-    title: 'Test Product 2',
-  },
-  {
-    title: 'Test Product 3',
-  },
-  {
-    title: 'Test Product 4',
-  },
-  {
-    title: 'Test Product 1',
-  },
-  {
-    title: 'Test Product 2',
-  },
-  {
-    title: 'Test Product 3',
-  },
-  {
-    title: 'Test Product 4',
-  },
-];
+import { deleteBanner, getBanners } from '../../redux/actions/banner';
+import BannerFormModal from '../../components/admin/BannerFormModal';
+import ImageViewer from '../../components/products/ImageViewer';
 
 const BannerList = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
+  const loggedInUser = useSelector((state) => state.loggedInUser);
+  const { userInfo } = loggedInUser;
+  const router = useRouter();
+
+  const dispatch = useDispatch();
+
+  const bannerData = useSelector((state) => state.bannerData);
+  const { loading, banners, success } = bannerData;
+
+  const [currentSlug, setCurrentSlug] = useState(null);
+  const [bImage, setBImage] = useState([]);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    if (userInfo.role !== 'Admin') {
+      router.push('/');
+    } else {
+      dispatch(getBanners());
+    }
+  }, []);
+
   const showModal = () => {
     setIsModalVisible(true);
+  };
+
+  const delBanner = (slug) => {
+    dispatch(deleteBanner(slug));
   };
   return (
     <>
@@ -63,38 +67,53 @@ const BannerList = () => {
         <List
           className='m-4 card'
           itemLayout='horizontal'
-          dataSource={data}
+          dataSource={banners}
+          loading={loading}
           renderItem={(item) => (
             <List.Item>
               <List.Item.Meta
                 avatar={
-                  <Avatar src='https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-13-family-select-2021?wid=940&hei=1112&fmt=jpeg&qlt=80&.v=1629842667000' />
+                  <Avatar
+                    src={item.image?.Location}
+                    shape='square'
+                    onClick={() => {
+                      setBImage([item.image]);
+                      setVisible(true);
+                    }}
+                  />
                 }
                 title={item.title}
-                description={
-                  'Ant Design, a design language for background applications, is refined by Ant UED Team'
-                }
               />
-              <button className='btn btn-secondary' onClick={() => {}}>
+              <button
+                className='btn btn-secondary'
+                onClick={() => setCurrentSlug(item.slug)}
+              >
                 <EditOutlined />
               </button>
 
-              <button className='btn btn-danger m-2' onClick={() => {}}>
+              <button
+                className='btn btn-danger m-2'
+                onClick={() => {
+                  delBanner(item.slug);
+                }}
+              >
                 <DeleteOutlined />
               </button>
             </List.Item>
           )}
         />
       </div>
-      <div className='row'>
-        <div className='m-auto p-4'>
-          <Pagination size='small' total={50} showSizeChanger showQuickJumper />
-        </div>
-      </div>
-      <CouponModal
+
+      <BannerFormModal
         isModalVisible={isModalVisible}
         setIsModalVisible={setIsModalVisible}
+        loading={loading}
+        success={success}
+        currentSlug={currentSlug}
+        banners={banners}
+        setCurrentSlug={setCurrentSlug}
       />
+      <ImageViewer images={bImage} visible={visible} setVisible={setVisible} />
     </>
   );
 };
