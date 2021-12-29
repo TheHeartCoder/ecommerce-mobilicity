@@ -113,6 +113,11 @@ const BrandFormModal = ({
 
   const removeImage = async () => {
     try {
+      try {
+      if (!brandData.image?.Location) {
+        toast.error('No image to remove');
+        return;
+      }
       const response = await removeImageFromServer(brandData.image);
 
       setBrandData({ ...brandData, image: '' });

@@ -160,6 +160,10 @@ const ProductFormModal = ({
 
   const removeImage = async (img) => {
     try {
+      if (!img?.Location) {
+        toast.error('No image to remove');
+        return;
+      }
       await removeImageFromServer(img);
       const updatedImages = productData.images.filter(
         (image) => image.Location !== img.Location

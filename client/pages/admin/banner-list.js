@@ -45,8 +45,8 @@ const BannerList = () => {
   return (
     <>
       <HeadText
-        headText='All Coupons'
-        subText='Mangae your coupons from here'
+        headText='All Banners'
+        subText='Mangae your banners from here'
       />
       <div className='row'>
         <div className='col-md-8 offset-md-2'>
@@ -57,7 +57,7 @@ const BannerList = () => {
               className='float-right'
               onClick={showModal}
             >
-              Add New Coupon
+              Add New Banner
             </Button>
           </div>
         </div>

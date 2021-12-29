@@ -121,6 +121,10 @@ const CategoryFormModal = ({
 
   const removeImage = async () => {
     try {
+      if (!catData.image?.Location) {
+        toast.error('No image to remove');
+        return;
+      }
       const response = await removeImageFromServer(catData.image);
 
       setCatData({ ...catData, image: '' });

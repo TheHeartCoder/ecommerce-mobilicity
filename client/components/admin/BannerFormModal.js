@@ -110,6 +110,10 @@ const BannerFormModal = ({
 
   const removeImage = async () => {
     try {
+      if (!bannerDetails.image?.Location) {
+        toast.error('No image to remove');
+        return;
+      }
       const response = await removeImageFromServer(bannerDetails.image);
 
       setBannerDetails({ ...bannerDetails, image: {} });
@@ -161,7 +165,7 @@ const BannerFormModal = ({
         beforeUpload={beforeUpload}
         onChange={handleChange}
       >
-        uploadButton
+        {uploadButton}
       </Upload>
       <button className='btn btn-sm btn-danger' onClick={removeImage}>
         Delete Image
