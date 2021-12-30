@@ -83,21 +83,23 @@ export const deleteBrand = (slug) => async (dispatch) => {
   }
 };
 
-export const getBrands = () => async (dispatch) => {
-  try {
-    dispatch({
-      type: GET_BRAND_REQ,
-    });
-    const data = await getBrandsFromServer();
+export const getBrands =
+  (page = '', limit = '') =>
+  async (dispatch) => {
+    try {
+      dispatch({
+        type: GET_BRAND_REQ,
+      });
+      const data = await getBrandsFromServer(page, limit);
 
-    dispatch({
-      type: GET_BRAND_SUCCESS,
-      payload: data,
-    });
-  } catch (error) {
-    dispatch({
-      type: GET_BRAND_FAIL,
-    });
-    toast.error(error);
-  }
-};
+      dispatch({
+        type: GET_BRAND_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: GET_BRAND_FAIL,
+      });
+      toast.error(error);
+    }
+  };

@@ -9,6 +9,8 @@ import { deleteCategory, getCategories } from '../../redux/actions/categories';
 
 const CategoryList = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [curPage, setCurPage] = useState(1);
+  const [limit, setLimit] = useState(10);
 
   const loggedInUser = useSelector((state) => state.loggedInUser);
   const { userInfo } = loggedInUser;
@@ -17,7 +19,7 @@ const CategoryList = () => {
   const dispatch = useDispatch();
 
   const categoriesData = useSelector((state) => state.categoryData);
-  const { loading, categories, success } = categoriesData;
+  const { loading, categories, count, success } = categoriesData;
 
   const [currentSlug, setCurrentSlug] = useState(null);
 
@@ -25,9 +27,9 @@ const CategoryList = () => {
     if (userInfo.role !== 'Admin') {
       router.push('/');
     } else {
-      dispatch(getCategories());
+      dispatch(getCategories(curPage, limit));
     }
-  }, []);
+  }, [curPage, limit]);
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -91,7 +93,18 @@ const CategoryList = () => {
       </div>
       <div className='row'>
         <div className='m-auto p-4'>
-          <Pagination size='small' total={50} showSizeChanger showQuickJumper />
+          <Pagination
+            size='small'
+            total={count}
+            showSizeChanger
+            showQuickJumper
+            current={curPage}
+            pageSize={limit}
+            onChange={(page, pageSize) => {
+              setCurPage(page);
+              setLimit(pageSize);
+            }}
+          />
         </div>
       </div>
       <CategoryFormModal

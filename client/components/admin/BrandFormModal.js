@@ -43,7 +43,7 @@ const BrandFormModal = ({
   useEffect(() => {
     if (success) {
       setIsModalVisible(false);
-      dispatch(getBrands());
+      dispatch(getBrands(1));
     }
   }, [success]);
 
@@ -113,7 +113,6 @@ const BrandFormModal = ({
 
   const removeImage = async () => {
     try {
-      try {
       if (!brandData.image?.Location) {
         toast.error('No image to remove');
         return;

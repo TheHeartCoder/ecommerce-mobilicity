@@ -131,7 +131,7 @@ const NavBar = () => {
                 </Item>
                 <Item key='setting:23'>
                   {' '}
-                  <Link href='/admin/prduct-brands'>
+                  <Link href='/admin/brand-list'>
                     <a>Brands</a>
                   </Link>
                 </Item>

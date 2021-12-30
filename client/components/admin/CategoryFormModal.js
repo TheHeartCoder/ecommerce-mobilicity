@@ -49,7 +49,7 @@ const CategoryFormModal = ({
   useEffect(() => {
     if (success) {
       setIsModalVisible(false);
-      dispatch(getCategories());
+      dispatch(getCategories(1));
     }
   }, [success]);
 

@@ -1,17 +1,16 @@
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { List, Avatar, Button } from 'antd';
+import { List, Avatar, Button, Pagination } from 'antd';
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-
+import BrandFormModal from '../../components/admin/BrandFormModal';
+import HeadText from '../../components/HeadText';
+import { deleteBrand, getBrands } from '../../redux/actions/brand';
 import { useRouter } from 'next/router';
 
-import HeadText from '../../components/HeadText';
-import { deleteBanner, getBanners } from '../../redux/actions/banner';
-import BannerFormModal from '../../components/admin/BannerFormModal';
-import ImageViewer from '../../components/products/ImageViewer';
-
-const BannerList = () => {
+const BrandList = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [curPage, setCurPage] = useState(1);
+  const [limit, setLimit] = useState(10);
 
   const loggedInUser = useSelector((state) => state.loggedInUser);
   const { userInfo } = loggedInUser;
@@ -19,34 +18,29 @@ const BannerList = () => {
 
   const dispatch = useDispatch();
 
-  const bannerData = useSelector((state) => state.bannerData);
-  const { loading, banners, success } = bannerData;
+  const brandData = useSelector((state) => state.brandData);
+  const { loading, brands, success, count } = brandData;
 
   const [currentSlug, setCurrentSlug] = useState(null);
-  const [bImage, setBImage] = useState([]);
-  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     if (userInfo.role !== 'Admin') {
       router.push('/');
     } else {
-      dispatch(getBanners());
+      dispatch(getBrands(curPage, limit));
     }
-  }, []);
+  }, [curPage, limit]);
 
   const showModal = () => {
     setIsModalVisible(true);
   };
 
-  const delBanner = (slug) => {
-    dispatch(deleteBanner(slug));
+  const delBrand = (slug) => {
+    dispatch(deleteBrand(slug));
   };
   return (
     <>
-      <HeadText
-        headText='All Banners'
-        subText='Mangae your banners from here'
-      />
+      <HeadText headText='All Brands' subText='Mangae your brands from here' />
       <div className='row'>
         <div className='col-md-8 offset-md-2'>
           <div className='ml-auto p-4'>
@@ -56,7 +50,7 @@ const BannerList = () => {
               className='float-right'
               onClick={showModal}
             >
-              Add New Banner
+              Add New Brand
             </Button>
           </div>
         </div>
@@ -66,34 +60,18 @@ const BannerList = () => {
         <List
           className='m-4 card p-2'
           itemLayout='horizontal'
-          dataSource={banners}
+          dataSource={brands}
           loading={loading}
           renderItem={(item) => (
             <List.Item>
               <List.Item.Meta
-                avatar={
-                  <Avatar
-                    src={item.image?.Location}
-                    shape='square'
-                    onClick={() => {
-                      setBImage([item.image]);
-                      setVisible(true);
-                    }}
-                  />
-                }
-                title={
-                  <a
-                    target='_blank'
-                    href={item.link}
-                    style={{ color: '#12129c' }}
-                  >
-                    Click here to see the link
-                  </a>
-                }
+                avatar={<Avatar src={item.image?.Location} shape='square' />}
+                title={item.title}
+                description={item.description}
               />
               <button
                 className='btn btn-secondary'
-                onClick={() => setCurrentSlug(item._id)}
+                onClick={() => setCurrentSlug(item.slug)}
               >
                 <EditOutlined />
               </button>
@@ -101,7 +79,7 @@ const BannerList = () => {
               <button
                 className='btn btn-danger m-2'
                 onClick={() => {
-                  delBanner(item._id);
+                  delBrand(item.slug);
                 }}
               >
                 <DeleteOutlined />
@@ -110,19 +88,33 @@ const BannerList = () => {
           )}
         />
       </div>
-
-      <BannerFormModal
+      <div className='row'>
+        <div className='m-auto p-4'>
+          <Pagination
+            size='small'
+            total={count}
+            showSizeChanger
+            showQuickJumper
+            current={curPage}
+            pageSize={limit}
+            onChange={(page, pageSize) => {
+              setCurPage(page);
+              setLimit(pageSize);
+            }}
+          />
+        </div>
+      </div>
+      <BrandFormModal
         isModalVisible={isModalVisible}
         setIsModalVisible={setIsModalVisible}
         loading={loading}
         success={success}
         currentSlug={currentSlug}
-        banners={banners}
+        brands={brands}
         setCurrentSlug={setCurrentSlug}
       />
-      <ImageViewer images={bImage} visible={visible} setVisible={setVisible} />
     </>
   );
 };
 
-export default BannerList;
+export default BrandList;

@@ -48,9 +48,9 @@ const BannerFormModal = ({
 
   useEffect(() => {
     if (currentSlug) {
-      const banner = banners.find((c) => c.slug === currentSlug);
+      const banner = banners.find((c) => c._id === currentSlug);
 
-      setBannerDetails(...bannerDetails, ...banner);
+      setBannerDetails({ ...bannerDetails, ...banner });
       setIsModalVisible(true);
     }
   }, [currentSlug]);
@@ -81,8 +81,9 @@ const BannerFormModal = ({
       return;
     }
     if (info.file.status === 'done') {
-      if (bannerDetails?.image) {
+      if (bannerDetails?.image?.Location) {
         toast.error('Please delete previuos image before uploading new one');
+        setImageLoading(false);
         return;
       }
       // resize
@@ -153,6 +154,7 @@ const BannerFormModal = ({
         type='text'
         className='form-control mb-2 p-2'
         placeholder='Banner Link'
+        value={bannerDetails.link}
         onChange={(e) =>
           setBannerDetails({ ...bannerDetails, link: e.target.value })
         }
@@ -165,7 +167,15 @@ const BannerFormModal = ({
         beforeUpload={beforeUpload}
         onChange={handleChange}
       >
-        {uploadButton}
+        {bannerDetails.image?.Location ? (
+          <img
+            src={bannerDetails.image?.Location}
+            alt='avatar'
+            style={{ width: '100%' }}
+          />
+        ) : (
+          uploadButton
+        )}
       </Upload>
       <button className='btn btn-sm btn-danger' onClick={removeImage}>
         Delete Image

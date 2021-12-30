@@ -16,7 +16,7 @@ export const addBanner = async (req, res) => {
 
     res.json(banner);
   } catch (error) {
-    console.log(err);
+    console.log(error);
     return res.status(500).send('Something went wrong with save banner data');
   }
 };
@@ -27,18 +27,15 @@ export const updateBanner = async (req, res) => {
     if (!link || !image) {
       return res.status(400).send('Please provide all required fields');
     }
-
-    const existBanner = await Banner.findOne({ _id: req.params.id });
+    console.log(req.params.id);
+    const existBanner = await Banner.findById(req.params.id);
     if (!existBanner) return res.status(404).send('Banner not found');
 
-    const banner = await Banner.findOneAndUpdate(
-      { _id: req.params._id },
-      {
-        link,
-        image,
-      },
-      { new: true }
-    );
+    const banner = await Banner.findByIdAndUpdate(req.params.id, {
+      link,
+      image,
+    });
+    console.log(banner);
     res.json(banner);
   } catch (error) {
     console.log(error);

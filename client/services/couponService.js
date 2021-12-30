@@ -1,22 +1,9 @@
 import axios from 'axios';
-import { removeImageFromServer } from './imageService';
 
-export const addBrandToServer = (body) => {
+export const addCouponToServer = (body) => {
   return new Promise(async (resolve, reject) => {
     try {
-      let { data } = await axios.post('/api/add-brand', body);
-      resolve(data);
-    } catch (error) {
-      await removeImageFromServer(body.image);
-      reject(error?.response?.data);
-    }
-  });
-};
-
-export const updateBrandToServer = (slug, body) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      let { data } = await axios.post(`/api/update-brand/${slug}`, body);
+      let { data } = await axios.post('/api/add-coupon', body);
       resolve(data);
     } catch (error) {
       reject(error?.response?.data);
@@ -24,10 +11,10 @@ export const updateBrandToServer = (slug, body) => {
   });
 };
 
-export const delBrandFromServer = (slug) => {
+export const updateCouponToServer = (slug, body) => {
   return new Promise(async (resolve, reject) => {
     try {
-      let { data } = await axios.delete(`/api/delete-brand/${slug}`);
+      let { data } = await axios.post(`/api/update-coupon/${slug}`, body);
       resolve(data);
     } catch (error) {
       reject(error?.response?.data);
@@ -35,12 +22,10 @@ export const delBrandFromServer = (slug) => {
   });
 };
 
-export const getBrandsFromServer = (page, limit) => {
+export const delCouponFromServer = (slug) => {
   return new Promise(async (resolve, reject) => {
     try {
-      let { data } = await axios.get(
-        `/api/all-brand?page=${page}&limit=${limit}`
-      );
+      let { data } = await axios.delete(`/api/delete-coupon/${slug}`);
       resolve(data);
     } catch (error) {
       reject(error?.response?.data);
@@ -48,10 +33,21 @@ export const getBrandsFromServer = (page, limit) => {
   });
 };
 
-export const getBrandFromServer = (slug) => {
+export const getCouponsFromServer = () => {
   return new Promise(async (resolve, reject) => {
     try {
-      let { data } = await axios.get(`/api/get-brand/${slug}`);
+      let { data } = await axios.get('/api/all-coupon');
+      resolve(data);
+    } catch (error) {
+      reject(error?.response?.data);
+    }
+  });
+};
+
+export const getCouponFromServer = (slug) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let { data } = await axios.get(`/api/get-coupon/${slug}`);
       resolve(data);
     } catch (error) {
       reject(error?.response?.data);

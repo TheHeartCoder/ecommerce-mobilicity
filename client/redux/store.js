@@ -9,14 +9,15 @@ import { categoryReducer } from './reducers/categoryReducer';
 import { brandReducer } from './reducers/brandReducer';
 import { bannerReducer } from './reducers/bannerReducer';
 import { productReducer } from './reducers/productReducer';
+import { couponReducer } from './reducers/couponReducer';
 
 const reducers = combineReducers({
-  // contacts: contactReducer,
   loggedInUser: loginReducer,
   categoryData: categoryReducer,
   brandData: brandReducer,
   productData: productReducer,
   bannerData: bannerReducer,
+  couponData: couponReducer,
 });
 const userInfoFromStorage =
   typeof window !== 'undefined' &&

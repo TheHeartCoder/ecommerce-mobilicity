@@ -23,21 +23,21 @@ export const bannerReducer = (state = {}, action) => {
       return { ...state, loading: false };
 
     case ADD_BANNER_REQ:
-      return { ...state, loading: true };
+      return { ...state, loading: true, success: false };
     case ADD_BANNER_SUCCESS:
       return { ...state, success: true, loading: false };
     case ADD_BANNER_FAIL:
       return { ...state, loading: false };
 
     case UPDATE_BANNER_REQ:
-      return { loading: true };
+      return { ...state, loading: true, success: false };
     case UPDATE_BANNER_SUCCESS:
       return { ...state, success: true, loading: false };
     case UPDATE_BANNER_FAIL:
       return { ...state, loading: false };
 
     case DEL_BANNER_REQ:
-      return { loading: true };
+      return { ...state, loading: true, success: false };
     case DEL_BANNER_SUCCESS:
       return { ...state, success: true, loading: false };
     case DEL_BANNER_FAIL:
