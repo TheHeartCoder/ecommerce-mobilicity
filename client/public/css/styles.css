@@ -85,3 +85,11 @@ input[type='radio'] {
     flex: 0 0 33.5%;
   }
 }
+
+.spinner {
+  position: absolute;
+  z-index: 1031;
+  top: 40%;
+  left: 50%;
+  /* transform: translate(-50%, -50%); */
+}

@@ -1,8 +1,8 @@
 const Footer = () => {
   return (
-    <div className='container-fluid mb-4 mt-4 hide-print'>
+    <div className='container-fluid mb-4 mt-4 hide-print fixed-bottom'>
       <hr />
-      <p className='text-center'>
+      <p className='text-center '>
         Designed & Developed By{' '}
         <b>
           <a
@@ -13,7 +13,7 @@ const Footer = () => {
           </a>
         </b>{' '}
       </p>
-      <h3 className='text-center'> --- </h3>
+      <h3 className='text-center mt-4'> --- </h3>
     </div>
   );
 };

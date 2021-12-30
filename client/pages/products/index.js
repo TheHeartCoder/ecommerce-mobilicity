@@ -1,6 +1,6 @@
 import { Card, Pagination, Select, Slider } from 'antd';
 import HeadText from '../../components/HeadText';
-import ProductCard from '../../components/Index/ProductCard';
+import ItemsOnCard from '../../components/Index/ItemsOnCard';
 import ProductFilter from '../../components/products/ProductFilter';
 
 const { Option } = Select;
@@ -30,40 +30,40 @@ const ProductIndex = () => {
               </div>
               <div className='row'>
                 <div className='col-md-3 p-2'>
-                  <ProductCard />
+                  <ItemsOnCard />
                 </div>
                 <div className='col-md-3 p-2'>
-                  <ProductCard />
+                  <ItemsOnCard />
                 </div>
                 <div className='col-md-3 p-2'>
-                  <ProductCard />
+                  <ItemsOnCard />
                 </div>
                 <div className='col-md-3 p-2'>
-                  <ProductCard />
+                  <ItemsOnCard />
                 </div>
                 <div className='col-md-3 p-2'>
-                  <ProductCard />
+                  <ItemsOnCard />
                 </div>
                 <div className='col-md-3 p-2'>
-                  <ProductCard />
+                  <ItemsOnCard />
                 </div>
                 <div className='col-md-3 p-2'>
-                  <ProductCard />
+                  <ItemsOnCard />
                 </div>
                 <div className='col-md-3 p-2'>
-                  <ProductCard />
+                  <ItemsOnCard />
                 </div>
                 <div className='col-md-3 p-2'>
-                  <ProductCard />
+                  <ItemsOnCard />
                 </div>
                 <div className='col-md-3 p-2'>
-                  <ProductCard />
+                  <ItemsOnCard />
                 </div>
                 <div className='col-md-3 p-2'>
-                  <ProductCard />
+                  <ItemsOnCard />
                 </div>
                 <div className='col-md-3 p-2'>
-                  <ProductCard />
+                  <ItemsOnCard />
                 </div>
               </div>
 
