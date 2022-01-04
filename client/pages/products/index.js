@@ -8,19 +8,22 @@ import ProductFilter from '../../components/products/ProductFilter';
 import { getBrands } from '../../redux/actions/brand';
 import { getCategories } from '../../redux/actions/categories';
 import { getProducts } from '../../redux/actions/products';
+import { useRouter } from 'next/router';
 
 const { Option } = Select;
 const ProductIndex = () => {
+  const router = useRouter();
+  console.log(router.query);
   const [curPage, setCurPage] = useState(1);
   const [limit, setLimit] = useState(12);
   const [sort, setSort] = useState('');
   const [order, setOrder] = useState('');
-  const [keyword, setKeyword] = useState('');
+
   const [filter, setFilter] = useState({
     category: '',
     brand: '',
     highestPrice: '',
-    lowestPrice: '',
+    lowestPrice: 0,
   });
 
   const productData = useSelector((state) => state.productData);
@@ -35,8 +38,10 @@ const ProductIndex = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getProducts(curPage, limit, sort, order, '', filter));
-  }, [curPage, limit, sort, order, filter]);
+    dispatch(
+      getProducts(curPage, limit, sort, order, router.query?.keyword, filter)
+    );
+  }, [curPage, limit, sort, order, filter, router.query]);
 
   useEffect(() => {
     dispatch(getCategories(1));

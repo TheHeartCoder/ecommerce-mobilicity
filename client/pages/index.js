@@ -3,6 +3,7 @@ import IndexCarousel from '../components/Index/IndexCarousel';
 import CarouselBorad from '../components/Index/CarouselBorad';
 import { getIndexItemsFromServer } from '../services/indexService';
 import Loader from '../components/loader';
+import toast from 'react-hot-toast';
 
 const index = () => {
   const [loading, setLoading] = useState(false);

@@ -16,6 +16,7 @@ import { logoutUser } from '../services/authService';
 import { USER_LOGOUT } from '../redux/constants/auth';
 import { toast } from 'react-hot-toast';
 import { useSelector } from 'react-redux';
+import Router from 'next/router';
 
 const { Item, SubMenu } = Menu;
 
@@ -25,6 +26,7 @@ const NavBar = () => {
   const [current, setCurrent] = useState('');
 
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [keywordValue, setKeywordValue] = useState('');
 
   const loggedInUser = useSelector((state) => state.loggedInUser);
   const { userInfo } = loggedInUser;
@@ -35,6 +37,11 @@ const NavBar = () => {
 
   const handleOk = () => {
     setIsModalVisible(false);
+    Router.push({
+      pathname: '/products',
+      query: { keyword: keywordValue },
+    });
+    setKeywordValue((val) => '');
   };
 
   const handleCancel = () => {
@@ -219,6 +226,8 @@ const NavBar = () => {
           type='text'
           placeholder='Search Products'
           className='form-control'
+          value={keywordValue}
+          onChange={(e) => setKeywordValue(e.target.value)}
         />
       </Modal>
     </>
