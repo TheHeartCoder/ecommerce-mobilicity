@@ -83,7 +83,7 @@ export const deleteProduct = (slug) => async (dispatch) => {
 };
 
 export const getProducts =
-  (page = '', limit = '', sort = '', order = '', keyword = '') =>
+  (page = '', limit = '', sort = '', order = '', keyword = '', filter = '') =>
   async (dispatch) => {
     try {
       dispatch({
@@ -94,7 +94,8 @@ export const getProducts =
         limit,
         sort,
         order,
-        keyword
+        keyword,
+        filter
       );
 
       dispatch({

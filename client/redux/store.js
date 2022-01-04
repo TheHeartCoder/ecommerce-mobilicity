@@ -51,7 +51,7 @@ const makeStore = () => {
               console.log('/401 error > logout');
               dispatch({ type: 'LOGOUT' });
               window.localStorage.removeItem('_usr_mobilicity');
-              router.push('/login');
+              window.location.reload();
             })
             .catch((err) => {
               console.log('AXIOS INTERCEPTORS ERR', err);

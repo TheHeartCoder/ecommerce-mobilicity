@@ -17,6 +17,7 @@ const ItemsOnCard = ({ item, type }) => {
   const [description, setDescription] = useState('');
   const [slug, setSlug] = useState('');
   const [redirectionLink, setRedirectionLink] = useState('');
+  const [price, setPrice] = useState('');
 
   useEffect(() => {
     if (item && type) {
@@ -26,6 +27,7 @@ const ItemsOnCard = ({ item, type }) => {
           setTitle(item.name);
           setDescription(item.highlightDescription);
           setRedirectionLink(`/products/${item.slug}`);
+          setPrice(item.price);
           break;
         case 'categories':
           setImage(item.image.Location);
@@ -63,6 +65,7 @@ const ItemsOnCard = ({ item, type }) => {
         }
         description={description}
       />
+      {type === 'products' && <p>Price : ${price}</p>}
     </Card>
   );
 };

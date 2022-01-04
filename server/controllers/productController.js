@@ -88,32 +88,53 @@ export const getProducts = async (req, res) => {
     const skip = (page - 1) * pageSize;
     const sortBy = sort ? sort : 'name';
     const orderBy = order ? order : 'asc';
-    // const allFilter = JSON.parse(req.query.filter);
+    const allFilter = JSON.parse(req.query.filter);
+    console.log(allFilter);
+
     let findQuery = {};
 
-    // if (keyword) {
-    // 	findQuery = {
-    // 		...findQuery,
-    // 		name: {
-    // 			$regex: keyword,
-    // 			$options: 'i',
-    // 		},
-    // 	};
-    // }
+    if (keyword) {
+      findQuery = {
+        ...findQuery,
+        name: {
+          $regex: keyword,
+          $options: 'i',
+        },
+      };
+    }
 
-    // if (allFilter.category) {
-    // 	findQuery = {
-    // 		...findQuery,
-    // 		category: allFilter.category,
-    // 	};
-    // }
+    if (allFilter.category) {
+      findQuery = {
+        ...findQuery,
+        category: allFilter.category,
+      };
+    }
 
-    // if (allFilter.brand) {
-    // 	findQuery = {
-    // 		...findQuery,
-    // 		brand: allFilter.brand,
-    // 	};
-    // }
+    if (allFilter.brand) {
+      findQuery = {
+        ...findQuery,
+        brand: allFilter.brand,
+      };
+    }
+
+    if (allFilter.highestPrice) {
+      findQuery = {
+        ...findQuery,
+        price: {
+          $lt: allFilter.highestPrice,
+          $gt: allFilter.lowestPrice,
+        },
+      };
+    } else {
+      findQuery = {
+        ...findQuery,
+        price: {
+          $gt: allFilter.lowestPrice,
+        },
+      };
+    }
+
+    console.log(findQuery);
 
     const count = await Product.countDocuments(findQuery);
 
