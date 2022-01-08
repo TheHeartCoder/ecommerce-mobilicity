@@ -1,7 +1,13 @@
 import { Card, Select } from 'antd';
 
 const { Option } = Select;
-const ProductFilter = ({ filter, setFilter, categories, brands }) => {
+const ProductFilter = ({
+  filter,
+  setFilter,
+  categories,
+  brands,
+  resetFilter,
+}) => {
   return (
     <Card style={{ width: '100% ' }}>
       <h4 className='text-center text-primary'>Filter</h4>
@@ -74,6 +80,16 @@ const ProductFilter = ({ filter, setFilter, categories, brands }) => {
               <Option value={35000}>35000</Option>
               <Option value=''>50000+</Option>
             </Select>
+          </div>
+        </div>
+        <div className='row'>
+          <div className='col'>
+            <button
+              className='btn btn-info mt-4 btn-block'
+              onClick={resetFilter}
+            >
+              Reset Filter
+            </button>
           </div>
         </div>
       </div>

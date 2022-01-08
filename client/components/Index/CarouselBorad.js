@@ -22,7 +22,7 @@ const responsive = {
 const CarouselBorad = ({ items, type }) => {
   return (
     <>
-      {items.length && (
+      {items && items.length && (
         <Carousel responsive={responsive}>
           {items.map((item, index) => (
             <div className='p-2' key={index + '-card'}>

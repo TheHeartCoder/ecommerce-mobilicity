@@ -73,7 +73,9 @@ export const deleteProduct = async (req, res) => {
 
 export const getProduct = async (req, res) => {
   try {
-    const product = await Product.findOne({ slug: req.params.slug });
+    const product = await Product.findOne({ slug: req.params.slug })
+      .populate('brand')
+      .populate('category');
     res.json(product);
   } catch (error) {
     console.log(error);
