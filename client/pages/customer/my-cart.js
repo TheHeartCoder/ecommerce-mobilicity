@@ -1,72 +1,153 @@
 import HeadText from '../../components/HeadText';
 
 import { List, Avatar, Button, InputNumber } from 'antd';
+import { useEffect } from 'react';
+import {
+  addCartItem,
+  delCartItem,
+  getCartItems,
+} from '../../redux/actions/cart';
+import { useDispatch, useSelector } from 'react-redux';
+import Loader from '../../components/loader';
+import { useRouter } from 'next/router';
 const data = [
-	{
-		title: 'Test Product 1',
-	},
-	{
-		title: 'Test Product 2',
-	},
-	{
-		title: 'Test Product 3',
-	},
-	{
-		title: 'Test Product 4',
-	},
+  {
+    title: 'Test Product 1',
+  },
+  {
+    title: 'Test Product 2',
+  },
+  {
+    title: 'Test Product 3',
+  },
+  {
+    title: 'Test Product 4',
+  },
 ];
 const MyCart = () => {
-	return (
-		<>
-			<HeadText headText='Cart' subText='Feel free to buy these products' />
-			<div className='container'>
-				<div className='card'>
-					<div className='row'>
-						<div className='col-md-10 offset-md-1'>
-							<List
-								itemLayout='horizontal'
-								dataSource={data}
-								renderItem={(item) => (
-									<List.Item>
-										<List.Item.Meta
-											avatar={
-												<Avatar src='https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-13-family-select-2021?wid=940&hei=1112&fmt=jpeg&qlt=80&.v=1629842667000' />
-											}
-											title={<a href='https://ant.design'>{item.title}</a>}
-											description='Ant Design, a design language for background applications, is refined by Ant UED Team'
-										/>
-										<h className='text-info mr-4'>$250</h>
-										<InputNumber
-											min={1}
-											max={3}
-											defaultValue={1}
-											onChange={() => {}}
-											className='m-2'
-										/>
-										<Button type='danger'>Remove</Button>
-									</List.Item>
-								)}
-							/>
-						</div>
-					</div>
-					<hr />
-					<div className='row'>
-						<div className='col'>
-							{' '}
-							<div className='float-right d-flex'>
-								<h3 className='text-info'>
-									Total Price : <strong>$2500</strong>
-								</h3>
-								<Button type='primary' className='mr-4 ml-4'>
-									Place order
-								</Button>
-							</div>
-						</div>{' '}
-					</div>
-				</div>
-			</div>
-		</>
-	);
+  const router = useRouter();
+  const dispatch = useDispatch();
+
+  const cartData = useSelector((state) => state.cartData);
+  const { cartItems, loading, success, loadingCart } = cartData;
+
+  useEffect(() => {
+    dispatch(getCartItems());
+  }, []);
+  console.log(cartItems);
+  console.log(
+    cartItems &&
+      cartItems.map(({ product, quantity }) => product.price * quantity)
+  );
+  return (
+    <>
+      <HeadText headText='Cart' subText='Feel free to buy these products' />
+      {loading ? (
+        <Loader />
+      ) : cartItems && cartItems.length > 0 ? (
+        <div className='container'>
+          <div className='card'>
+            <div className='row'>
+              <div className='col-md-10 offset-md-1'>
+                <List
+                  itemLayout='horizontal'
+                  dataSource={cartItems}
+                  className='m-2'
+                  renderItem={(item) => (
+                    <List.Item>
+                      <List.Item.Meta
+                        avatar={
+                          <Avatar src={item.product.images[0].Location} />
+                        }
+                        title={
+                          <a href='https://ant.design'>{item.product.name}</a>
+                        }
+                        description={
+                          <>
+                            <p>{item.product.highlightDescription}</p>
+                            <h5>
+                              Total Price : $
+                              {item.product.price * item.quantity}
+                            </h5>
+                          </>
+                        }
+                      />
+                      <h3 className='text-info mr-4'>${item.product.price}</h3>
+                      <InputNumber
+                        min={1}
+                        max={3}
+                        value={item.quantity}
+                        disabled={loadingCart}
+                        onChange={(value) => {
+                          console.log(value);
+                          dispatch(
+                            addCartItem({
+                              productId: item.product._id,
+                              quantity: value,
+                            })
+                          );
+                        }}
+                        className='m-2'
+                      />
+                      <Button
+                        type='danger'
+                        onClick={() => dispatch(delCartItem(item._id))}
+                      >
+                        Remove
+                      </Button>
+                    </List.Item>
+                  )}
+                />
+              </div>
+            </div>
+            <hr />
+            <div className='row'>
+              <div className='col'>
+                {' '}
+                <div className='float-right d-flex'>
+                  <h3 className='text-info'>
+                    Total Price :{' '}
+                    <strong>
+                      $
+                      {cartItems && cartItems.length > 0
+                        ? cartItems
+                            .map(
+                              ({ product, quantity }) =>
+                                product.price * quantity
+                            )
+                            .reduce((a, c) => {
+                              return a + c;
+                            })
+                        : '00'}
+                    </strong>
+                  </h3>
+                  <Button type='primary' className='mr-4 ml-4'>
+                    Place order
+                  </Button>
+                </div>
+              </div>{' '}
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className='container'>
+          <div className='card'>
+            <div className='row'>
+              <div className='col'>
+                <h3 className='text-center m-4'>{'No items in cart'}</h3>
+              </div>
+              <button
+                className='btn btn-info btn-block m-4 p-2'
+                onClick={() => router.push('/')}
+              >
+                Shop Now
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
 };
 
 export default MyCart;

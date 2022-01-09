@@ -21,7 +21,7 @@ export const addProductToCart = async (req, res) => {
         (product) => product.product.toString() === productId
       );
       if (productExist) {
-        productExist.quantity += quantity;
+        productExist.quantity = quantity;
         await existCart.save();
         return res.json(existCart);
       } else {
@@ -43,11 +43,27 @@ export const addProductToCart = async (req, res) => {
 
 export const getCartItems = async (req, res) => {
   try {
-    const cart = await Cart.findOne({ user: req.user._id });
-    if (!cart) return res.status(404).send('Cart not found');
+    const cart = await Cart.findOne({ user: req.user._id }).populate(
+      'products.product'
+    );
     res.json(cart);
   } catch (error) {
     console.log(error);
     return res.status(500).send('Internal server error for getting cart');
+  }
+};
+
+export const deleteCartItem = async (req, res) => {
+  try {
+    const cart = await Cart.findOne({ user: req.user._id });
+    const productIndex = cart.products
+      .map((product) => product.product.toString())
+      .indexOf(req.params.productId);
+    cart.products.splice(productIndex, 1);
+    await cart.save();
+    res.json(cart);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send('Internal server error for deleting cart');
   }
 };

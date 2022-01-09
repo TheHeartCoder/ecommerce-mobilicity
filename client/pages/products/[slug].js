@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { getProduct } from '../../redux/actions/products';
 import Loader from '../../components/loader';
+import { addCartItem } from '../../redux/actions/cart';
 
 const Product = () => {
   const [imgForView, setImgForView] = useState('');
@@ -27,6 +28,9 @@ const Product = () => {
   const productData = useSelector((state) => state.productData);
   const { product, loading } = productData;
 
+  const cartData = useSelector((state) => state.cartData);
+  const { loadingCart, success } = cartData;
+
   useEffect(() => {
     slug && dispatch(getProduct(slug));
   }, [slug]);
@@ -35,7 +39,13 @@ const Product = () => {
     if (product) setImgForView(product.images[0].Location);
   }, [product]);
 
-  console.log(imgForView);
+  useEffect(() => {
+    if (success) router.push('/customer/my-cart');
+  }, [success]);
+
+  const addItemToCart = () => {
+    dispatch(addCartItem({ productId: product._id, quantity: 1 }));
+  };
 
   return (
     <>
@@ -124,6 +134,7 @@ const Product = () => {
                   type='ghost'
                   className='btn-block'
                   icon={<ShoppingCartOutlined />}
+                  onClick={addItemToCart}
                 >
                   Add To Cart
                 </Button>

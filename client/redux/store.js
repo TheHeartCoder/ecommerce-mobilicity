@@ -10,6 +10,7 @@ import { brandReducer } from './reducers/brandReducer';
 import { bannerReducer } from './reducers/bannerReducer';
 import { productReducer } from './reducers/productReducer';
 import { couponReducer } from './reducers/couponReducer';
+import { cartReducer } from './reducers/cartReducer';
 
 const reducers = combineReducers({
   loggedInUser: loginReducer,
@@ -18,6 +19,7 @@ const reducers = combineReducers({
   productData: productReducer,
   bannerData: bannerReducer,
   couponData: couponReducer,
+  cartData: cartReducer,
 });
 const userInfoFromStorage =
   typeof window !== 'undefined' &&
