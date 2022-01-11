@@ -11,6 +11,7 @@ import { bannerReducer } from './reducers/bannerReducer';
 import { productReducer } from './reducers/productReducer';
 import { couponReducer } from './reducers/couponReducer';
 import { cartReducer } from './reducers/cartReducer';
+import { addressReducer } from './reducers/addressReducer';
 
 const reducers = combineReducers({
   loggedInUser: loginReducer,
@@ -20,7 +21,9 @@ const reducers = combineReducers({
   bannerData: bannerReducer,
   couponData: couponReducer,
   cartData: cartReducer,
+  addressData: addressReducer,
 });
+
 const userInfoFromStorage =
   typeof window !== 'undefined' &&
   window.localStorage.getItem('_usr_mobilicity')

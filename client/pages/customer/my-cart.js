@@ -2,6 +2,7 @@ import HeadText from '../../components/HeadText';
 
 import { List, Avatar, Button, InputNumber } from 'antd';
 import { useEffect } from 'react';
+
 import {
   addCartItem,
   delCartItem,
@@ -10,20 +11,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import Loader from '../../components/loader';
 import { useRouter } from 'next/router';
-const data = [
-  {
-    title: 'Test Product 1',
-  },
-  {
-    title: 'Test Product 2',
-  },
-  {
-    title: 'Test Product 3',
-  },
-  {
-    title: 'Test Product 4',
-  },
-];
+
 const MyCart = () => {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -39,6 +27,9 @@ const MyCart = () => {
     cartItems &&
       cartItems.map(({ product, quantity }) => product.price * quantity)
   );
+  const handlePlaceOrder = () => {
+    router.push('/checkout');
+  };
   return (
     <>
       <HeadText headText='Cart' subText='Feel free to buy these products' />
@@ -121,7 +112,11 @@ const MyCart = () => {
                         : '00'}
                     </strong>
                   </h3>
-                  <Button type='primary' className='mr-4 ml-4'>
+                  <Button
+                    type='primary'
+                    className='mr-4 ml-4'
+                    onClick={handlePlaceOrder}
+                  >
                     Place order
                   </Button>
                 </div>

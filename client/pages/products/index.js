@@ -13,7 +13,7 @@ import { useRouter } from 'next/router';
 const { Option } = Select;
 const ProductIndex = () => {
   const router = useRouter();
-  console.log(router.query);
+
   const [curPage, setCurPage] = useState(1);
   const [limit, setLimit] = useState(12);
   const [sort, setSort] = useState('');
