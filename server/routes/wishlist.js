@@ -1,9 +1,9 @@
 import express from 'express';
 
 import {
-  addProductToWishlist,
-  getWishlistItems,
-  deleteWishlistItem,
+	addProductToWishlist,
+	getWishlistItems,
+	deleteWishlistItem,
 } from '../controllers/wishlistController';
 
 const router = express.Router();
