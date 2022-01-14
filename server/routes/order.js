@@ -12,7 +12,7 @@ const router = express.Router();
 
 import { authTokenVerify } from '../middleware';
 
-router.get('/orders', authTokenVerify, addOrderItems);
+router.post('/orders', authTokenVerify, addOrderItems);
 router.post('/orders/pay/:id', authTokenVerify, updateOrderToPaid);
 router.post('/orders/deliver/:id', authTokenVerify, updateOrderToDelivered);
 router.get('/orders/:id', authTokenVerify, getOrderByID);

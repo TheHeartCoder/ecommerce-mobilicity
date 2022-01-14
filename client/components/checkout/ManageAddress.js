@@ -1,42 +1,43 @@
 import { List } from 'antd';
 
-const data = [
-  {
-    title: 'Mr. Arindam Paul 1 || 7001722370',
-  },
-  {
-    title: 'Mr. Arindam Paul 2 || 7001722370',
-  },
-  {
-    title: 'Mr. Arindam Paul 3 || 7001722370',
-  },
-  {
-    title: 'Mr. Arindam Paul 4 || 7001722370',
-  },
-  {
-    title: 'Mr. Arindam Paul 4 || 7001722370',
-  },
-];
-const ManageAddress = () => {
+const ManageAddress = ({
+  addresses: { adds },
+  setOrderDetails,
+  orderDetails,
+  setStepNo,
+  stepNo,
+  placeOrder,
+}) => {
   return (
     <>
       <div className='row p-4 card'>
         <div className='col'>
           <List
             itemLayout='horizontal'
-            dataSource={data}
+            dataSource={adds || []}
             renderItem={(item) => (
               <List.Item>
                 <List.Item.Meta
-                  title={<p className='text-primary'>{item.title}</p>} // which will be selected that one color will be text-primary or else text-dark
-                  description='AC 166 , Ashoke villa, 2nd floor, Prafulla Kanan (N), Keshtopur, Kolkata, West Bengal - 700101'
+                  title={`${item.fullName} (${item.phoneNo})`}
+                  description={
+                    <>
+                      <p>
+                        {item.locality} , {item.landmark}, {item.pinNo}
+                      </p>
+                      <p>
+                        {item.fullAddress}, {item.state}
+                      </p>
+                      <p>{item.phoneNo2}</p>
+                    </>
+                  }
                 />
-                <input type='radio' value='' name='checkoutAddress' />
+                {/* <input type='radio' value='' name='checkoutAddress' /> */}
                 <button
                   type='button'
                   className='btn btn-sm btn-outline-success m-4'
+                  onClick={() => placeOrder(item._id)}
                 >
-                  Deliver Here
+                  Deliver Here & Continue
                 </button>
               </List.Item>
             )}

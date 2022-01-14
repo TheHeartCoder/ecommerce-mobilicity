@@ -21,7 +21,8 @@ const login = () => {
 
   useEffect(() => {
     if (userInfo && userInfo.email) {
-      router.push('/');
+      const { from } = router.query?.from || '';
+      from ? router.push('/checkout') : router.push('/');
     }
 
     if (activationId) {

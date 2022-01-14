@@ -16,6 +16,6 @@ router.post('/add-coupon', authTokenVerify, isAdmin, addCoupon);
 router.post('/update-coupon/:id', authTokenVerify, isAdmin, updateCoupon);
 router.delete('/delete-coupon/:id', authTokenVerify, isAdmin, deleteCoupon);
 router.get('/get-coupon/:id', getCoupon);
-router.get('/all-coupon', authTokenVerify, isAdmin, getCoupons);
+router.get('/all-coupon', authTokenVerify, getCoupons);
 
 module.exports = router;

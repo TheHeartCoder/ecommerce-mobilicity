@@ -2,14 +2,13 @@ import Order from '../models/order';
 
 export const addOrderItems = async (req, res) => {
   try {
-    const { orderItems, shippingAddress, paymentMethod, totalPrice } = req.body;
+    const { orderItems, shippingAddress, totalPrice } = req.body;
 
     if (orderItems && orderItems.length > 0) {
       const newOrder = new Order({
         user: req.user._id,
         orderItems,
         shippingAddress,
-        paymentMethod,
         totalPrice,
       });
       await newOrder.save();
